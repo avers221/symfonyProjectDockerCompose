@@ -15,8 +15,16 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN curl -sS https://get.symfony.com/cli/installer | bash
 RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
+RUN pecl channel-update pecl.php.net
+
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 RUN git config --global user.email "2avers2@gmail.com" \
     && git config --global user.name "Pavel Bushlanov"
+
+##PHP расширения для установки Redis
+
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
